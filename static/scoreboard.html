@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Scoreboard</title>
+</head>
+<body>
+    <h1>Scoreboard</h1>
+    <h3 id="score"></h3>
+    <script>
+        var scoreText = document.getElementById("score");
+        var ws = new WebSocket('ws://localhost:8081');
+        ws.onmessage = message => {
+            console.log(message);
+            message = JSON.parse(message.data);
+            switch (message.id) {
+                case 'newScore':
+                scoreText.innerHTML = message.score;
+                    break;
+            
+                default:
+                    break;
+            }
+            
+        }
+    </script>
+</body>
+</html>

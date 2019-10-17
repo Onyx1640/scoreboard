@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Controller</title>
+</head>
+<body>
+    <h1>Controller</h1>
+    <button onclick="changeScore(1)">Increase Score</button>
+    <button onclick="changeScore(-1)">Decrease Score</button>
+    <script>
+        var ws = new WebSocket('ws://localhost:8081');
+        ws.onmessage = message => {
+            console.log(message);
+        }
+        function changeScore(ammount) {
+            ws.send(JSON.stringify({
+                id: "score",
+                score: ammount
+            }));
+        }
+    </script>
+</body>
+</html>
