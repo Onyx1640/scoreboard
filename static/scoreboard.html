@@ -4,27 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="scoreboard.css">
     <title>Scoreboard</title>
 </head>
 <body>
-    <h1>Scoreboard</h1>
-    <h3 id="score"></h3>
-    <script>
-        var scoreText = document.getElementById("score");
-        var ws = new WebSocket('ws://localhost:8081');
-        ws.onmessage = message => {
-            console.log(message);
-            message = JSON.parse(message.data);
-            switch (message.id) {
-                case 'newScore':
-                scoreText.innerHTML = message.score;
-                    break;
-            
-                default:
-                    break;
-            }
-            
-        }
-    </script>
+    <div class="parent">
+        <div id="timer" class="div1"> 
+            &nbsp;
+        </div>
+        <div class="div2"> 
+            Your Score:
+            <div id="score">0</div>
+        </div>
+        <div class="div3"> 
+            High Score: 
+            <div id="highScore">0</div>            
+        </div>
+        <script type="text/javascript" src="scoreboard.js"></script>
+    </div>
 </body>
 </html>

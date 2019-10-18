@@ -4,23 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="scoreboard.css">
     <title>Controller</title>
 </head>
 <body>
-    <h1>Controller</h1>
-    <button onclick="changeScore(1)">Increase Score</button>
-    <button onclick="changeScore(-1)">Decrease Score</button>
-    <script>
-        var ws = new WebSocket('ws://localhost:8081');
-        ws.onmessage = message => {
-            console.log(message);
-        }
-        function changeScore(ammount) {
-            ws.send(JSON.stringify({
-                id: "score",
-                score: ammount
-            }));
-        }
-    </script>
+    <h1>Scoreboard Controller</h1>
+    <h3 id="timer2"></h3>
+    <span>Enter Timer Length in Seconds</span>
+    <br>
+    <input type="text" id="timerLength">
+    <br>
+    <a href="#" class="button4" style="background-color:#1bf070" onclick="startTimer()">Start Timer</a>
+    <a href="#" class="button4" style="background-color:#f14e4e" onclick="stopTimer()">Stop Timer</a>
+    <br>
+    <a href="#" class="button4" style="background-color:#4e9af1" onclick="changeTime(5)">Add 5 seconds</a>
+    <a href="#" class="button4" style="background-color:#f1bb4e" onclick="changeTime(-5)">Remove 5 Seconds</a>
+    <br>
+    <a href="#" class="button4" style="background-color:#4e9af1" onclick="changeFontSize(5)">Increase Timer Font Size</a>
+    <a href="#" class="button4" style="background-color:#f1bb4e" onclick="changeFontSize(-5)">Decrease Timer Font Size</a>
+    <br>
+    <h2>Score:</h2>
+    <h3 id="score">0</h3>
+    <a href="#" class="button4" style="background-color:#4e9af1" onclick="changeScore(1)">Increase Score</a>
+    <a href="#" class="button4" style="background-color:#f1bb4e" onclick="changeScore(-1)">Decrease Score</a>
+    <a href="#" class="button4" style="background-color:#f14e4e" onclick="resetScore()">Reset Score</a>
+    <br>
+    <h2>High Score:</h2>
+    <h3 id="highScore">0</h3>
+    <input type="text" id="enterHighScore">
+    <a href="#" class="button4" style="background-color:#f14ebd" onclick="setHighScore()">Set High Score</a>
+    <script type="text/javascript" src="scoreboard.js"></script>
 </body>
 </html>

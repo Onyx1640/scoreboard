@@ -19,8 +19,14 @@ wss.on('connection', ws => {
                 }));
                 break;
             case 'startTimer':
-                timerLength = timerLength + message.length;
-                startTimer();
+                timerLength = timerLength + parseInt(message.length);
+                if (timerLength > 0) {
+                    startTimer();
+                    wss.broadcast(JSON.stringify({
+                        id: 'timerCount',
+                        time: timerLength
+                    }));
+                }
                 break;
             case 'addTime':
                 timerLength = timerLength + message.length;
@@ -29,9 +35,36 @@ wss.on('connection', ws => {
                 clearInterval(timer);
                 timerLength = 0;
                 wss.broadcast(JSON.stringify({
-                    id: 'timerCount',
-                    time: timerLength
+                    id: 'timerStop'
                 }));
+            case 'changeTime':
+                if (timerLength > 0) {
+                    timerLength = timerLength + parseInt(message.time);
+                    wss.broadcast(JSON.stringify({
+                        id: 'timerCount',
+                        time: timerLength
+                    }));
+                }
+                break;
+            case 'setHighScore':
+                wss.broadcast(JSON.stringify({
+                    id: 'setHighScore',
+                    score: message.score
+                }));
+                break;
+            case 'fontSize':
+                wss.broadcast(JSON.stringify({
+                    id: 'fontSize',
+                    size: message.size
+                }));
+                break;
+            case 'scoreReset':
+                score = 0;
+                wss.broadcast(JSON.stringify({
+                    id: 'newScore',
+                    score: score
+                }));
+                break;
             default:
                 break;
         }
