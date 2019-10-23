@@ -77,6 +77,9 @@ function startTimer() {
             wss.broadcast(JSON.stringify({
                 id: 'timerStop'
             }));
+            wss.broadcast(JSON.stringify({
+                id: 'horn'
+            }));
             timerLength = 0;
             clearInterval(timer);
         } else {

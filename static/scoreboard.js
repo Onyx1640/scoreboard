@@ -4,6 +4,7 @@ var timerText2 = document.getElementById("timer2");
 var timerLength = document.getElementById("timerLength");
 var highScore = document.getElementById("highScore");
 var enterHighScore = document.getElementById("enterHighScore");
+var airHorn = document.getElementById("air_horn");
 var fontSize = 650;
 var ws = new WebSocket('ws://localhost:8081');
 ws.onmessage = message => {
@@ -38,6 +39,12 @@ ws.onmessage = message => {
                 
             }
             break;
+        case 'horn':
+            try {
+                airHorn.play();
+            } catch (error) {
+                
+            }
         case 'setHighScore':
             highScore.innerHTML = message.score;
             break;
@@ -94,4 +101,7 @@ function changeFontSize(size) {
         id: 'fontSize',
         size: size
     }));
+}
+function horn() {
+    airHorn.play();
 }
