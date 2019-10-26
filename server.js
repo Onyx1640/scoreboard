@@ -6,6 +6,12 @@ var wss = new WebSocket.Server({
     port: 8081
 });
 var score = 0;
+var hs1 = 0;
+var hs1Name = 'Name: ';
+var hs2 = 0;
+var hs2Name = 'Name: ';
+var hs3 = 0;
+var hs3Name = 'Name: ';
 wss.on('connection', ws => {
     ws.on('message', message => {
         console.log(message);
@@ -47,10 +53,7 @@ wss.on('connection', ws => {
                 }
                 break;
             case 'setHighScore':
-                wss.broadcast(JSON.stringify({
-                    id: 'setHighScore',
-                    score: message.score
-                }));
+                setHighScore(message.name,message.score);
                 break;
             case 'fontSize':
                 wss.broadcast(JSON.stringify({
@@ -89,6 +92,69 @@ function startTimer() {
             }));
         }
     }, 1000);
+}
+function setHighScore(name,score) {
+    var scoreInt = parseInt(score);
+    if(scoreInt >= hs3 && score < hs2 ) {
+        hs3 = scoreInt;
+        hs3Name = name;
+        wss.broadcast(JSON.stringify({
+            id: 'setHS3',
+            score: name + ": " + scoreInt
+        }));
+    }
+    if(scoreInt > hs2 && score < hs1 ) {
+        hs3 = hs2;
+        hs3Name = hs2Name;
+        hs2 = scoreInt;
+        hs2Name = name;
+        wss.broadcast(JSON.stringify({
+            id: 'setHS3',
+            score: hs3Name + ": " + hs3
+        }));
+        wss.broadcast(JSON.stringify({
+            id: 'setHS2',
+            score: name + ": " + scoreInt
+        }));
+    }
+    if(scoreInt === hs2) {
+        hs2Name = name;
+        wss.broadcast(JSON.stringify({
+            id: 'setHS2',
+            score: name + ": " + scoreInt
+        }));
+    }
+    if(scoreInt > hs1) {
+        hs3 = hs2;
+        hs3Name = hs2Name;
+        hs2 = hs1;
+        hs2Name = hs1Name;
+        hs1 = scoreInt;
+        hs1Name = name;
+        wss.broadcast(JSON.stringify({
+            id: 'setHS2',
+            score: hs2Name + ": " + hs2
+        }));
+        wss.broadcast(JSON.stringify({
+            id: 'setHS3',
+            score: hs3Name + ": " + hs3
+        }));
+        wss.broadcast(JSON.stringify({
+            id: 'setHS1',
+            score: name + ": " + scoreInt
+        }));
+    }
+    if (scoreInt === hs1) {
+        hs1Name = name;
+        wss.broadcast(JSON.stringify({
+            id: 'setHS1',
+            score: name + ": " + scoreInt
+        }));
+    }
+    // wss.broadcast(JSON.stringify({
+    //     id: 'setHighScore',
+    //     score: message.score
+    // }));
 }
 wss.broadcast = function broadcast(msg) {
     console.log(msg);

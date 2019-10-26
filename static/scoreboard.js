@@ -3,7 +3,10 @@ var timerText = document.getElementById("timer");
 var timerText2 = document.getElementById("timer2");
 var timerLength = document.getElementById("timerLength");
 var highScore = document.getElementById("highScore");
+var highScore2 = document.getElementById("highScore2");
+var highScore3 = document.getElementById("highScore3");
 var enterHighScore = document.getElementById("enterHighScore");
+var enterName = document.getElementById("enterName");
 var airHorn = document.getElementById("air_horn");
 var fontSize = 650;
 var ws = new WebSocket('ws://localhost:8081');
@@ -57,6 +60,15 @@ ws.onmessage = message => {
                 
             }
             break;
+        case 'setHS1':
+            highScore.innerHTML = message.score;
+            break;
+        case 'setHS2':
+                highScore2.innerHTML = message.score;
+                break;
+        case 'setHS3':
+                highScore3.innerHTML = message.score;
+                break;
         default:
             break;
     }
@@ -69,6 +81,8 @@ function changeScore(ammount) {
     }));
 }
 function resetScore() {
+    enterName.value = "";
+    enterName.focus();
     ws.send(JSON.stringify({
         id: "scoreReset"
     }));
@@ -93,7 +107,8 @@ function changeTime(time) {
 function setHighScore() {
     ws.send(JSON.stringify({
         id: 'setHighScore',
-        score: enterHighScore.value
+        score: enterHighScore.value,
+        name: enterName.value
     }));
 }
 function changeFontSize(size) {
